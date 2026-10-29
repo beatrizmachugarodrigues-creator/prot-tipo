@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hub de Materiais | Agregador de Estudos</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  
+  <!-- Barra Lateral / Navegação -->
+  <aside class="sidebar">
+    <div class="logo">
+      <h2>StudyHub 📚</h2>
+    </div>
+    <nav class="nav-menu">
+      <a href="#" class="active">📍 Meus Tópicos</a>
+      <a href="#">📅 Planejamento</a>
+      <a href="#">⭐ Favoritos</a>
+      <a href="#">⚙️ Configurações</a>
+    </nav>
+  </aside>
+
+  <!-- Conteúdo Principal -->
+  <main class="main-content">
+    
+    <!-- Cabeçalho -->
+    <header class="top-header">
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Pesquisar materiais, PDFs, links...">
+      </div>
+      <div class="user-profile">
+        <span>Olá, <strong>Lucas</strong></span>
+        <div class="avatar">L</div>
+      </div>
+    </header>
+
+    <!-- Cabeçalho do Tópico -->
+    <section class="topic-header">
+      <div>
+        <span class="category-tag">Biologia</span>
+        <h1>Aula de Genética 🧬</h1>
+        <p>Todos os materiais reunidos para a prova da semana.</p>
+      </div>
+      <button class="btn-primary" id="openModalBtn">+ Adicionar Material</button>
+    </section>
+
+    <!-- Filtros de Formato -->
+    <section class="filters">
+      <button class="filter-chip active" data-filter="all">Todos</button>
+      <button class="filter-chip" data-filter="pdf">📄 PDFs</button>
+      <button class="filter-chip" data-filter="video">🎥 Vídeos</button>
+      <button class="filter-chip" data-filter="image">🖼️ Fotos da Lousa</button>
+      <button class="filter-chip" data-filter="note">📝 Anotações</button>
+    </section>
+
+    <!-- Mural de Materiais (Grid) -->
+    <section class="materials-grid" id="materialsGrid">
+      
+      <!-- Card: PDF -->
+      <article class="card" data-type="pdf">
+        <div class="card-badge pdf">📄 PDF</div>
+        <h3>Resumo de Leis de Mendel</h3>
+        <p>Material completo enviado pelo professor com exercícios resolvidos.</p>
+        <div class="card-footer">
+          <span class="source">Google Drive</span>
+          <a href="#" class="card-link">Abrir PDF ↗</a>
+        </div>
+      </article>
+
+      <!-- Card: Vídeo -->
+      <article class="card" data-type="video">
+        <div class="card-badge video">🎥 Vídeo</div>
+        <h3>Videoaula: Cruzamento e Dominância</h3>
+        <p>Explicação prática de 15 minutos focada em resolução de questões.</p>
+        <div class="card-footer">
+          <span class="source">YouTube</span>
+          <a href="#" class="card-link">Assistir ↗</a>
+        </div>
+      </article>
+
+      <!-- Card: Imagem -->
+      <article class="card" data-type="image">
+        <div class="card-badge image">🖼️ Foto da Lousa</div>
+        <h3>Quadro do Professor - Aparelho Celular</h3>
+        <p>Foto tirada durante a aula do dia 14/10 sobre heredogramas.</p>
+        <div class="card-footer">
+          <span class="source">Galeria</span>
+          <a href="#" class="card-link">Visualizar ↗</a>
+        </div>
+      </article>
+
+      <!-- Card: Anotação -->
+      <article class="card" data-type="note">
+        <div class="card-badge note">📝 Anotação</div>
+        <h3>Dúvidas Rápidas para Fazer</h3>
+        <p>Diferença prática entre genótipo e fenótipo nas questões da FUVEST.</p>
+        <div class="card-footer">
+          <span class="source">Bloco de Notas</span>
+          <a href="#" class="card-link">Editar ↗</a>
+        </div>
+      </article>
+
+    </section>
+
+  </main>
+
+  <!-- Modal para Adicionar Novo Material -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Adicionar Novo Material</h2>
+        <button class="close-btn" id="closeModalBtn">&times;</button>
+      </div>
+      <form id="addMaterialForm">
+        <div class="form-group">
+          <label for="materialTitle">Título do Material</label>
+          <input type="text" id="materialTitle" required placeholder="Ex: Exercícios de Fixação">
+        </div>
+
+        <div class="form-group">
+          <label for="materialType">Tipo de Formato</label>
+          <select id="materialType" required>
+            <option value="pdf">📄 PDF / Documento</option>
+            <option value="video">🎥 Vídeo / Link</option>
+            <option value="image">🖼️ Foto / Imagem</option>
+            <option value="note">📝 Anotação Pessoal</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="materialDesc">Descrição Breve</label>
+          <textarea id="materialDesc" rows="3" placeholder="Do que se trata esse conteúdo?"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="materialSource">Origem / Link</label>
+          <input type="text" id="materialSource" placeholder="Ex: Drive, YouTube, Galeria">
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" id="cancelBtn">Cancelar</button>
+          <button type="submit" class="btn-primary">Salvar no Mural</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

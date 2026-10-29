@@ -1,0 +1,96 @@
+document.addEventListener('DOMContentLoaded', () => {
+  // Elementos da Interface
+  const openModalBtn = document.getElementById('openModalBtn');
+  const closeModalBtn = document.getElementById('closeModalBtn');
+  const cancelBtn = document.getElementById('cancelBtn');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const addMaterialForm = document.getElementById('addMaterialForm');
+  const materialsGrid = document.getElementById('materialsGrid');
+  const filterChips = document.querySelectorAll('.filter-chip');
+  const searchInput = document.getElementById('searchInput');
+
+  // Controle de Abertura/Fechamento do Modal
+  const openModal = () => modalOverlay.classList.add('active');
+  const closeModal = () => {
+    modalOverlay.classList.remove('active');
+    addMaterialForm.reset();
+  };
+
+  openModalBtn.addEventListener('click', openModal);
+  closeModalBtn.addEventListener('click', closeModal);
+  cancelBtn.addEventListener('click', closeModal);
+
+  // Mapeamento de tipos para estilo visual
+  const typeMapping = {
+    pdf: { label: '📄 PDF', class: 'pdf' },
+    video: { label: '🎥 Vídeo', class: 'video' },
+    image: { label: '🖼️ Foto da Lousa', class: 'image' },
+    note: { label: '📝 Anotação', class: 'note' }
+  };
+
+  // Adicionar Novo Material via Form
+  addMaterialForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const title = document.getElementById('materialTitle').value;
+    const type = document.getElementById('materialType').value;
+    const desc = document.getElementById('materialDesc').value;
+    const source = document.getElementById('materialSource').value || 'Adicionado pelo usuário';
+
+    // Criação do Elemento HTML do Card
+    const newCard = document.createElement('article');
+    newCard.classList.add('card');
+    newCard.setAttribute('data-type', type);
+
+    newCard.innerHTML = `
+      <div class="card-badge ${typeMapping[type].class}">${typeMapping[type].label}</div>
+      <h3>${title}</h3>
+      <p>${desc}</p>
+      <div class="card-footer">
+        <span class="source">${source}</span>
+        <a href="#" class="card-link">Acessar ↗</a>
+      </div>
+    `;
+
+    // Inserir no topo da lista
+    materialsGrid.prepend(newCard);
+    closeModal();
+  });
+
+  // Funcionalidade dos Filtros por Categoria
+  filterChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      // Remove a classe active de todos e adiciona no selecionado
+      filterChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+
+      const filterValue = chip.getAttribute('data-filter');
+      const cards = materialsGrid.querySelectorAll('.card');
+
+      cards.forEach(card => {
+        if (filterValue === 'all' || card.getAttribute('data-type') === filterValue) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Funcionalidade de Busca Dinâmica
+  searchInput.addEventListener('input', (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    const cards = materialsGrid.querySelectorAll('.card');
+
+    cards.forEach(card => {
+      const title = card.querySelector('h3').textContent.toLowerCase();
+      const desc = card.querySelector('p').textContent.toLowerCase();
+
+      if (title.includes(searchTerm) || desc.includes(searchTerm)) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+});
